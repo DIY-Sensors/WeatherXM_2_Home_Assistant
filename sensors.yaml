@@ -1,0 +1,213 @@
+# WeatherXM-Home-Assistant
+- platform: rest
+  name: "weatherxm_sensor"
+  resource: https://api.weatherxm.com/api/v1/cells/871969ac1ffffff/devices
+  scan_interval: 300
+  value_template: "{{ value_json.value }}"
+  json_attributes_path: $.[0].current_weather
+  json_attributes:
+    - temperature
+    - feels_like
+    - humidity
+    - icon  
+    - precipitation
+    - pressure
+    - uv_index
+    - wind_direction
+    - wind_gust
+    - wind_speed
+    - solar_irradiance
+    - uv_index
+
+- platform: template
+  sensors:
+    weatherxm_uv_index:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'uv_index')|round(1)}}"
+    
+- platform: template
+  sensors:
+    weatherxm_solar_irradiance:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'solar_irradiance')|round(2)}}"
+      unit_of_measurement: "W/m2"
+
+    
+- platform: template
+  sensors:
+    weatherxm_temperature_celsius:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'temperature')|round(2)}}"
+      device_class: temperature
+      unit_of_measurement: "°C"
+
+- platform: template
+  sensors:
+    weatherxm_temperature_fahrenheit:
+      value_template: "{{ (state_attr('sensor.weatherxm_sensor', 'temperature') * 9/5 + 32) |round(1)}}"
+      device_class: temperature
+      unit_of_measurement:  "°F"
+
+- platform: template
+  sensors:
+    weatherxm_feels_like_fahrenheit:
+      value_template: "{{ (state_attr('sensor.weatherxm_sensor', 'feels_like') * 9/5 + 32) |round(1)}}"
+      device_class: temperature
+      unit_of_measurement:  "°F"
+
+
+- platform: template
+  sensors:
+    weatherxm_feels_like_celsius:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'feels_like')|round(2)}}"
+      device_class: temperature
+      unit_of_measurement: "°C"
+
+- platform: template
+  sensors:
+    weatherxm_humidity:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'humidity')|round(2)}}"
+      device_class: humidity
+      unit_of_measurement: "°%"
+
+- platform: template
+  sensors:
+    weatherxm_wind_speed_kmh:
+      value_template: "{{ (state_attr('sensor.weatherxm_sensor', 'wind_speed') |float * 3.6) |round(2) }}"
+      unit_of_measurement: "km/h"
+
+- platform: template
+  sensors:
+    weatherxm_wind_gust_kmh:
+      value_template: "{{ (state_attr('sensor.weatherxm_sensor', 'wind_gust') |float * 3.6) |round(2) }}"
+      unit_of_measurement: "km/h"
+      
+- platform: template
+  sensors:
+    weatherxm_weather_condition:
+      value_template: >
+          {% set state = state_attr('sensor.weatherxm_sensor', 'icon') %}
+          {% if state == 'partly-cloudy-night' %} Partly cloudy
+          {% elif state == 'partly-cloudy-day' %} Partly cloudy
+          {% elif state == 'cloudy-night' %} Cloudy
+          {% elif state == 'cloudy-day' %} Cloudy
+          {% elif state == 'sunny' %} Sunny
+          {% elif state == 'drizzle' %} Rainy
+          {% elif state == 'rainy' %} Rainy
+          {% elif state == 'rain' %} Rainy
+          {% elif state == 'unavailable' %} -
+          {% elif state == 'Unavailable' %} -
+          {% elif state == 'unknown' %} -
+          {% elif state == 'Unknown' %} -
+          {% endif %}
+      icon_template: >-
+          {% set state = state_attr('sensor.weatherxm_sensor', 'icon') %}
+          {% if state == 'partly-cloudy-night' %} mdi:weather-night-partly-cloudy
+          {% elif state == 'partly-cloudy-day' %} mdi:weather-partly-cloudy
+          {% elif state == 'cloudy-night' %} mdi:weather-night-partly-cloudy
+          {% elif state == 'cloudy-day' %} mdi:weather-cloudy
+          {% elif state == 'sunny' %} mdi:weather-sunny
+          {% elif state == 'drizzle' %} mdi:weather-pouring
+          {% elif state == 'rainy' %} mdi:weather-pouring
+          {% elif state == 'rain' %} mdi:weather-pouring
+          {% elif state == 'unavailable' %} mdi:reload
+          {% elif state == 'Unavailable' %} mdi:reload
+          {% elif state == 'unknown' %} mdi:reload
+          {% elif state == 'Unknown' %} mdi:reload
+          {% endif %}
+
+
+- platform: template
+  sensors:
+    weatherxm_icon:
+      friendly_name: 'weatherxm icon'
+      value_template: >
+          {% set state = state_attr('sensor.weatherxm_sensor', 'icon') %}
+          {% if state == 'partly-cloudy-night' %} mdi:weather-night-partly-cloudy
+          {% elif state == 'partly-cloudy-day' %} mdi:weather-partly-cloudy
+          {% elif state == 'cloudy-night' %} mdi:weather-night-partly-cloudy
+          {% elif state == 'cloudy-day' %} mdi:weather-cloudy
+          {% elif state == 'sunny' %} mdi:weather-sunny
+          {% elif state == 'drizzle' %} mdi:weather-pouring
+          {% elif state == 'rainy' %} mdi:weather-pouring
+          {% elif state == 'rain' %} mdi:weather-pouring
+          {% elif state == 'unavailable' %} mdi:reload
+          {% elif state == 'Unavailable' %} mdi:reload
+          {% elif state == 'unknown' %} mdi:reload
+          {% elif state == 'Unknown' %} mdi:reload
+          {% endif %}
+          
+- platform: template
+  sensors:
+    weatherxm_icon_color:
+      friendly_name: 'weatherxm icon color'
+      value_template: >
+          {% set state = state_attr('sensor.weatherxm_sensor', 'icon') %}
+          {% if state == 'partly-cloudy-night' %} blue-grey
+          {% elif state == 'partly-cloudy-day' %} white
+          {% elif state == 'cloudy-night' %} blue-grey
+          {% elif state == 'cloudy-day' %} white
+          {% elif state == 'sunny' %} yellow
+          {% elif state == 'drizzle' %} blue
+          {% elif state == 'rainy' %} blue
+          {% elif state == 'rain' %} blue
+          {% elif state == 'unavailable' %} grey
+          {% elif state == 'Unavailable' %} grey
+          {% elif state == 'unknown' %} grey
+          {% elif state == 'Unknown' %} grey
+          {% endif %}
+          
+- platform: template
+  sensors:
+    weatherxm_pressure_hpa:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'pressure')|round(0)}}"
+      device_class: pressure
+      unit_of_measurement: "°hPa"
+
+- platform: template
+  sensors:
+    weatherxm_wind_speed_mph:
+      value_template: "{{ (state_attr('sensor.weatherxm_sensor', 'wind_speed') |float / 1.60934) |round(2) }}"
+      unit_of_measurement: "mph"
+ 
+- platform: template
+  sensors:
+    weatherxm_wind_gust_mph:
+      value_template: "{{ (state_attr('sensor.weatherxm_sensor', 'wind_gust') |float / 1.60934) |round(2) }}"
+      unit_of_measurement: "mph"
+
+- platform: template
+  sensors:
+    weatherxm_wind_direction:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'wind_direction')}}"
+      unit_of_measurement: "°"
+
+
+- platform: template
+  sensors:
+    weatherxm_wind_text:
+      friendly_name: 'weatherxm wind text'
+      value_template: >
+          {% set state = state_attr('sensor.weatherxm_sensor', 'wind_direction') %}
+          {% if state <= 22.5 %} North
+          {% elif state > 22.5 and state <= 67.5 %} North-East
+          {% elif state > 67.5 and state <= 112.5 %} East
+          {% elif state > 112.5 and state <= 157.5 %} South-East
+          {% elif state > 157.5 and state <= 202.5 %} South
+          {% elif state > 202.5 and state <= 247.5 %} South-West
+          {% elif state > 247.5 and state <= 292.5 %} West
+          {% elif state > 292.5 and state <= 337.5 %} North-West
+          {% elif state > 337.5 %} North
+          {% else %} Error
+          {% endif %}
+          
+
+- platform: template
+  sensors:
+    weatherxm_precipitation:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'precipitation')}}"
+      device_class: precipitation_intensity
+      unit_of_measurement: "mm/h"
+
+- platform: template
+  sensors:
+    weatherxm_uv_index:
+      value_template: "{{ state_attr('sensor.weatherxm_sensor', 'uv_index')}}"
+      unit_of_measurement: "UV Index"
