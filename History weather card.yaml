@@ -1,0 +1,125 @@
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:apexcharts-card
+        graph_span: 48h
+        header:
+          show: true
+          title: Temperature Outdoor
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.weatherxm_temperature_celsius
+            name: " "
+            curve: smooth
+            type: line
+            stroke_width: 2
+            group_by:
+              duration: 30min
+              func: avg
+      - type: custom:apexcharts-card
+        graph_span: 48h
+        header:
+          show: true
+          title: Barometric Pressure
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.weatherxm_pressure_hpa
+            name: " "
+            curve: smooth
+            type: line
+            stroke_width: 2
+            group_by:
+              duration: 15min
+              func: avg
+        yaxis:
+          - min: 940
+            max: 1085
+            decimals: 0
+  - type: horizontal-stack
+    cards:
+      - type: custom:apexcharts-card
+        graph_span: 48h
+        header:
+          show: true
+          title: Wind Speed
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.weatherxm_wind_speed_kmh
+            name: " "
+            curve: smooth
+            type: line
+            stroke_width: 2
+            group_by:
+              duration: 15min
+              func: avg
+        yaxis:
+          - min: 0
+            max: 120
+            decimals: 0
+      - type: custom:apexcharts-card
+        graph_span: 48h
+        header:
+          show: true
+          title: Wind Gust
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.weatherxm_wind_gust_kmh
+            name: " "
+            curve: smooth
+            type: line
+            stroke_width: 2
+            group_by:
+              duration: 15min
+              func: max
+        yaxis:
+          - min: 0
+            max: 120
+            decimals: 0
+  - type: horizontal-stack
+    cards:
+      - type: custom:apexcharts-card
+        graph_span: 48h
+        header:
+          show: true
+          title: Rain
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.weatherxm_precipitation
+            name: " "
+            curve: smooth
+            type: line
+            stroke_width: 2
+            group_by:
+              duration: 15min
+              func: max
+        yaxis:
+          - min: 0
+            max: 25
+            decimals: 0
+      - type: custom:apexcharts-card
+        graph_span: 48h
+        header:
+          show: true
+          title: Solar Irradiance
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.weatherxm_solar_irradiance
+            name: " "
+            curve: smooth
+            type: line
+            stroke_width: 2
+            group_by:
+              duration: 30min
+              func: avg
+        yaxis:
+          - min: 0
+            max: 1365
+            decimals: 0
+title: History 48 hour

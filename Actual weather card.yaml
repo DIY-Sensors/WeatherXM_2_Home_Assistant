@@ -1,0 +1,106 @@
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.weatherxm_weather_condition
+        name: Actual weather
+        icon_color: sensor.weatherxm_icon_color
+      - type: custom:mushroom-entity-card
+        entity: sensor.weatherxm_precipitation
+        name: Rain
+        icon_color: grey
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.weatherxm_solar_irradiance
+        name: Solar Irradiance
+        icon: mdi:solar-power
+        icon_color: amber
+      - type: custom:mushroom-entity-card
+        entity: sensor.weatherxm_uv_index
+        name: UV Index
+        icon: mdi:sun-wireless-outline
+        icon_color: amber
+  - type: horizontal-stack
+    cards:
+      - type: gauge
+        entity: sensor.weatherxm_temperature_celsius
+        min: -30
+        max: 50
+        name: Temperature Outdoor
+        needle: true
+        segments:
+          - from: -30
+            color: "#039BE5"
+          - from: 0
+            color: "#FFA600"
+          - from: 18
+            color: "#43A047"
+          - from: 28
+            color: "#DB4437"
+      - type: gauge
+        entity: sensor.weatherxm_humidity
+        min: 0
+        max: 100
+        name: Humidity Outdoor
+        needle: true
+        segments:
+          - from: 0
+            color: "#039BE5"
+          - from: 30
+            color: "#43A047"
+          - from: 70
+            color: "#FFA600"
+          - from: 90
+            color: "#DB4437"
+      - type: gauge
+        entity: sensor.weatherxm_pressure_hpa
+        min: 940
+        max: 1085
+        needle: true
+        name: Barometric Pressure
+  - type: horizontal-stack
+    cards:
+      - type: gauge
+        entity: sensor.weatherxm_wind_speed_kmh
+        name: Wind Speed
+        min: 0
+        max: 120
+        needle: true
+        segments:
+          - from: 0
+            color: "#039BE5"
+          - from: 11
+            color: "#43A047"
+          - from: 29
+            color: "#FFA600"
+          - from: 50
+            color: "#DB4437"
+      - type: gauge
+        entity: sensor.weatherxm_wind_gust_kmh
+        name: Wind gust
+        min: 0
+        max: 120
+        needle: true
+        segments:
+          - from: 0
+            color: "#039BE5"
+          - from: 11
+            color: "#43A047"
+          - from: 29
+            color: "#FFA600"
+          - from: 50
+            color: "#DB4437"
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.weatherxm_wind_direction
+            icon: mdi:weather-windy
+            name: Direction
+          - type: custom:mushroom-entity-card
+            entity: sensor.weatherxm_wind_text
+            icon: mdi:compass
+            name: " "
+    title: Wind
+title: Actual weather
